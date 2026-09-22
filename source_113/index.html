@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" manifest="cache.appcache">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مكتب يحيى للإلكترونيات | PS4</title>
+<link rel="stylesheet" href="style.css">
+<style id="yahay-theme">
+html,body{margin:0!important;min-height:100%;background:#07090d!important;color:#eef2f7!important;font-family:Tahoma,Arial,sans-serif!important}
+body{background:radial-gradient(circle at 20% 10%,rgba(0,170,255,.14),transparent 30%),radial-gradient(circle at 85% 20%,rgba(125,60,255,.13),transparent 30%),linear-gradient(145deg,#05070a,#0a0e15 52%,#06080c)!important}
+.shell,#wrap,.wrap{width:min(900px,92%)!important;margin:auto!important}
+.topbar,#brand,.panel,.status-panel,.fw-section{background:rgba(10,14,20,.92)!important;border:1px solid rgba(255,255,255,.09)!important;box-shadow:0 18px 50px rgba(0,0,0,.30)!important;border-radius:18px!important}
+#brand{margin-top:24px!important;padding:16px!important}#brand img{display:none!important}
+#brand b,.brand-name{color:#eef2f7!important;font-size:19px!important;letter-spacing:0!important}.brand-sub,.hero-sub,#det,#cache{color:#8994a4!important}
+.hero{text-align:center!important;padding:42px 10px 20px!important}.hero-title{font-size:42px!important;color:#eef2f7!important}.accent{color:#7dd3fc!important}
+.status-panel,.fw-section{padding:20px!important;margin:14px 0!important;text-align:center!important}.fw-grid{display:flex!important;justify-content:center!important;gap:8px!important;flex-wrap:wrap!important}
+.fw-card{background:#0a1018!important;border:1px solid #1a2533!important;border-radius:9px!important;padding:9px 12px!important}
+#wrap{margin-top:18px!important;padding:24px!important;background:rgba(10,14,20,.92)!important;border:1px solid rgba(255,255,255,.09)!important;box-shadow:0 18px 50px rgba(0,0,0,.30)!important;border-radius:18px!important;text-align:center!important}
+#state{font-size:25px!important;color:#eef2f7!important}.foot{color:#657181!important;text-align:center!important}
+button,.btn{background:#0a1018!important;color:#eef2f7!important;border:1px solid #2563eb!important;border-radius:9px!important;padding:9px 16px!important}
+</style></head>
+<body>
+<div class="shell">
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-logo">PS4</div>
+            <div class="brand-text">
+                <span class="brand-name">مكتب يحيى للإلكترونيات</span>
+                <span class="brand-sub">PS4 Offline Host</span>
+            </div>
+        </div>
+        <div class="badge">YAHAY OFFICE</div>
+    </header>
+
+    <main class="wrap">
+        <section class="hero">
+            <h1 class="hero-title"> مكتب  <span class="accent">يحيى</span> للألكترونيات</h1>
+            <p class="hero-sub">كشف الإصدار وتشغيل التعديل تلقائياً</p>
+        </section>
+
+        <section class="status-panel">
+            <span id="msgs" class="status-text loading">⏳ Starting...</span>
+            <br>
+            <button id="runBtn" class="btn hidden" type="button">▶ Run now</button>
+        </section>
+
+        <section class="fw-section">
+            <h2 class="fw-heading">Supported Firmware</h2>
+            <div class="fw-grid">
+                <div class="fw-card" data-fw="11.00">
+                    <div class="fw-ver">11.00</div>
+                    <span class="fw-chain lapse">Lapse Chain</span>
+                </div>
+                <div class="fw-card" data-fw="11.50">
+                    <div class="fw-ver">11.50</div>
+                    <span class="fw-chain lapse">Lapse Chain</span>
+                </div>
+                <div class="fw-card" data-fw="11.52">
+                    <div class="fw-ver">11.52</div>
+                    <span class="fw-chain lapse">Lapse Chain</span>
+                </div>
+                <div class="fw-card" data-fw="12.00">
+                    <div class="fw-ver">12.00</div>
+                    <span class="fw-chain lapse">Lapse Chain</span>
+                </div>
+                <div class="fw-card" data-fw="12.02">
+                    <div class="fw-ver">12.02</div>
+                    <span class="fw-chain lapse">Lapse Chain</span>
+                </div>
+                <div class="fw-card" data-fw="12.50">
+                    <div class="fw-ver">12.50</div>
+                    <span class="fw-chain poops">Poops Chain</span>
+                </div>
+                <div class="fw-card" data-fw="12.52">
+                    <div class="fw-ver">12.52</div>
+                    <span class="fw-chain poops">Poops Chain</span>
+                </div>
+                <div class="fw-card" data-fw="13.00">
+                    <div class="fw-ver">13.00</div>
+                    <span class="fw-chain poops">Poops Chain</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="foot">
+        <p>جميع الحقوق محفوظة © مكتب يحيى للإلكترونيات • 07732954749</p>
+    </footer>
+</div>
+
+<script>
+    var msgs = document.getElementById('msgs');
+    var runBtn = document.getElementById('runBtn');
+
+    function updateStatus(msg, cls) {
+        msgs.innerHTML = msg;
+        msgs.className = 'status-text' + (cls ? ' ' + cls : '');
+    }
+
+    // ========== كشف الفيرموير ==========
+    var uaFull = navigator.userAgent;
+    var match = uaFull.match(/PlayStation 4[ \/](\d+)\.(\d+)/i);
+    var isPS4 = match !== null;
+    var fwVersion = isPS4 ? match[1] + "." + match[2] : "Unknown";
+    var fwNum = 0;
+    var key = null;
+    var bug = null;
+
+    if (match) {
+        key = match[1] + "." + match[2];
+        fwNum = parseInt(match[1], 10) * 100 + parseInt(match[2], 10);
+    }
+
+    if (isPS4) {
+        if (fwNum <= 1202) {
+            bug = "lapse";
+        } else if (fwNum >= 1250) {
+            bug = "poops";
+        }
+    }
+
+    // ========== توجيه مستقر ==========
+    // بدون query string: عنوان الصفحة الهدف يطابق عنوان الكاش بالضبط،
+    // فيعمل التوجيه دون اتصال. كان ?bug=lapse سابقاً يكسر التطابق.
+    var redirected = false;
+    var reloadedOnce = false;
+    var RELOAD_KEY = 'ps4host_reloaded_v1';
+
+    function redirectToRun() {
+        if (redirected || !isPS4 || !bug) return;
+        redirected = true;
+        var target = bug === 'lapse' ? 'run_lapse.html' : 'run_poops.html';
+        updateStatus('🚀 Loading ' + (bug === 'lapse' ? 'Lapse' : 'Poops') + ' exploit...');
+        window.location.replace(target);
+    }
+
+    // ========== الكاش (AppCache) ==========
+    // سلوك الاستقرار (يقلّل التحمد في المحاولة الأولى):
+    //  - كاش دافئ (noupdate): بدء تلقائي -- هذه هي الحالة المستقرة.
+    //  - كاش بارد (تثبيت أول): لا بدء تلقائي أبداً، نعرض زر ▶ Run now
+    //    حتى لا تتنافس السلسلة مع تنزيل الكاش على ذاكرة WebKit.
+    //  - خطأ كاش: زر فقط (تشغيل عبر الشبكة) -- لا بدء تلقائي.
+    var cacheState = 'unknown';
+    var SAFETY_MS = 30000;
+
+    function showRunButton() {
+        runBtn.className = 'btn';
+    }
+
+    var appCache = window.applicationCache;
+    if (appCache) {
+        appCache.addEventListener('checking', function() {
+            updateStatus('⏳ Checking cache...');
+        }, false);
+        appCache.addEventListener('downloading', function() {
+            updateStatus('📥 Installing cache (first visit)...');
+        }, false);
+        appCache.addEventListener('progress', function(e) {
+            if (e && e.total) {
+                var pct = Math.round((e.loaded / e.total) * 100);
+                updateStatus('📥 Caching ' + pct + '%...');
+            }
+        }, false);
+        appCache.addEventListener('cached', function() {
+            cacheState = 'cold';
+            updateStatus('✅ Cache installed -- starting...', 'success');
+            setTimeout(redirectToRun, 800);
+        }, false);
+        appCache.addEventListener('noupdate', function() {
+            cacheState = 'warm';
+            updateStatus('✅ Cache ready -- starting...', 'success');
+            // مهلة قصيرة حتى يستقر WebKit ثم نبدأ
+            setTimeout(redirectToRun, 600);
+        }, false);
+        appCache.addEventListener('updateready', function() {
+            try { appCache.swapCache(); } catch (e) {}
+            // إعادة تحميل واحدة فقط عند التحديث، ثم نكمل من الكاش الجديد
+            if (!reloadedOnce) {
+                reloadedOnce = true;
+                try { sessionStorage.setItem(RELOAD_KEY, '1'); } catch (e) {}
+                updateStatus('🔄 Update ready -- reloading once...');
+                setTimeout(function() { location.reload(); }, 300);
+            } else {
+                cacheState = 'warm';
+                updateStatus('✅ Cache updated -- starting...', 'success');
+                setTimeout(redirectToRun, 600);
+            }
+        }, false);
+        appCache.addEventListener('error', function() {
+            // الكاش فشل (لا اتصال أو الخادم مشغول) -- تشغيل عبر الشبكة بيد المستخدم
+            cacheState = 'error';
+            updateStatus('⚠️ Cache unavailable -- starting in network mode...');
+            setTimeout(redirectToRun, 800);
+        }, false);
+        appCache.addEventListener('obsolete', function() {
+            cacheState = 'error';
+            updateStatus('⚠️ Cache obsolete -- starting...');
+            setTimeout(redirectToRun, 800);
+        }, false);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // تمييز كارت الفيرموير المكتشف
+        if (key) {
+            var cards = document.querySelectorAll('.fw-card');
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].getAttribute('data-fw') === key) {
+                    cards[i].className += ' active';
+                }
+            }
+        }
+
+        if (!isPS4) {
+            updateStatus('⚠️ This page is for PS4 only!', 'error');
+            return;
+        }
+
+        if (!bug) {
+            updateStatus('❌ Unsupported Firmware: ' + fwVersion, 'error');
+            return;
+        }
+
+        updateStatus('✅ Detected PS4 Firmware: ' + fwVersion
+            + ' (' + (bug === 'lapse' ? 'Lapse' : 'Poops') + ' chain)');
+
+        // زر تشغيل يدوي متاح دائماً
+        runBtn.className = 'btn';
+        runBtn.addEventListener('click', redirectToRun, false);
+
+        // إن لم يوجد AppCache أصلاً نبدأ مباشرة (وضع شبكة)
+        if (!appCache) {
+            setTimeout(redirectToRun, 400);
+            return;
+        }
+
+        // شبكة أمان: مع كاش بارد/خاطئ لا نبدأ تلقائياً أبداً،
+        // فقط نؤكد ظهور الزر بعد 30 ثانية كحد أقصى
+        setTimeout(function() {
+            if (!redirected) {
+                updateStatus('⏳ Cache is slow -- starting automatically...');
+                redirectToRun();
+            }
+        }, SAFETY_MS);
+    });
+</script>
+</body>
+</html>

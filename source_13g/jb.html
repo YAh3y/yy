@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" manifest="cache.appcache">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>مكتب يحيى للإلكترونيات | PS4</title>
+    <style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Tahoma,Arial,sans-serif;color:#eef2f7}
+body{overflow:hidden;background:radial-gradient(circle at 20% 10%,rgba(0,170,255,.14),transparent 30%),radial-gradient(circle at 85% 20%,rgba(125,60,255,.13),transparent 30%),linear-gradient(145deg,#05070a,#0a0e15 52%,#06080c)}
+.panel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:860px;max-width:94%;background:rgba(10,14,20,.92);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:28px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.30)}
+.brand{font-size:34px;font-weight:900}
+.sub{color:#8994a4;margin:8px 0 18px}
+.ver{display:inline-block;padding:7px 14px;border-radius:9px;background:#0a1018;border:1px solid #1a2533;color:#b9c3cf;margin-bottom:14px}
+#spin{width:42px;height:42px;margin:8px auto 14px;border:4px solid #1e2732;border-top-color:#7fd0a0;border-radius:50%;animation:spin .65s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#msg{font-size:16px;color:#d08a7f;display:none}
+#state{font-size:17px;font-weight:700;margin:7px 0}
+#out{display:none;white-space:pre-wrap;text-align:left;font:12px/1.4 Consolas,monospace;background:#11151b;border:1px solid #1e2732;border-radius:7px;padding:10px;max-height:45vh;overflow:auto}
+.foot{color:#657181;font-size:12px;margin-top:15px}
+body.done #spin,body.fail #spin{display:none}
+body.fail #msg{display:block}
+body.log #spin,body.log #msg{display:none}
+body.log #out{display:block}
+.ok,.safe{color:#7fd0a0}.bad,.danger{color:#d08a7f}.warn{color:#d8c07f}code{color:#9fb3d0}
+</style>
+  </head>
+  <body>
+    <main class="panel">
+      <div class="brand">مكتب يحيى للإلكترونيات</div>
+      <div class="sub">PS4 • أوفلاين • سريع وخفيف</div>
+      <div class="ver">GoldHEN Auto Loader</div>
+      <div id="spin"></div>
+      <div id="msg">أعد تشغيل الجهاز وحاول مرة ثانية</div>
+      <div id="wrap">
+        <div id="state">جاري تشغيل التعديل تلقائياً...</div>
+        <div id="out"></div>
+      </div>
+      <div class="foot">جميع الحقوق محفوظة © مكتب يحيى للإلكترونيات • 07732954749</div>
+    </main>
+    <script type="module">
+      import "./jb.js?v=10";
+    </script>
+  </body>
+</html>
